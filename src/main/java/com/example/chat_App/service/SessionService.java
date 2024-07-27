@@ -34,5 +34,10 @@ public class SessionService {
 	public List<ChatMessage> getMessages() {
 		return messages;
 	}
+	
+	public void clearSession() {
+		this.username = null;
+		this.messages.clear();
+	}
 
 }
