@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.chat_App.model.ChatMessage;
+import com.example.chat_App.service.KafkaConsumerService;
 import com.example.chat_App.service.KafkaProducerService;
 import com.example.chat_App.service.SessionService;
 
@@ -19,7 +20,11 @@ public class JoinController {
 	private KafkaProducerService kafkaProducerService;
 	
 	@Autowired
+	private KafkaConsumerService kafkaConsumerService;
+	
+	@Autowired
 	private SessionService sessionService;
+	
 	
 	@GetMapping("/join")
 	public String showJoinPage() {
@@ -29,12 +34,15 @@ public class JoinController {
 	@PostMapping("/join")
 	public String joinChat(@RequestParam("username") String username, Model model) {
 		sessionService.createSession(username);
+		
 		String joinMessage = username + " has joined the chat.";
 		kafkaProducerService.sendMessage("System: " + joinMessage);
-		sessionService.addMessage(new ChatMessage("System", joinMessage));
+		
 		model.addAttribute("username",username);
+		model.addAttribute("messages", sessionService.getMessages());
+		
 		System.out.println("Welcome "+username);
-		return "redirect:/message"; //gonna change with chat.html
+		return "redirect:/message"; 
 	}
 	
 	@PostMapping("/leave")

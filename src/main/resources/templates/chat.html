@@ -17,6 +17,9 @@
                         data.forEach(function(message) {
                             messagesList.append('<li>' + message.sender + ': ' + message.message + '</li>');
                         });
+                    },
+                    error: function(err) {
+                        console.error("Failed to fetch messages", err);
                     }
                 });
             }
@@ -33,6 +36,9 @@
                     success: function() {
                         fetchMessages();
                         $('input[name="message"]').val('');
+                    },
+                    error: function(err) {
+                        console.error("Failed to send message", err);
                     }
                 });
             });
