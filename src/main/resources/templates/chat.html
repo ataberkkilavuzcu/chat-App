@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat Room</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function fetchMessages() {
+                $.ajax({
+                    url: '/history',
+                    method: 'GET',
+                    success: function(data) {
+                        var messagesList = $('#messages');
+                        messagesList.empty();
+                        data.forEach(function(message) {
+                            messagesList.append('<li>' + message.sender + ': ' + message.message + '</li>');
+                        });
+                    }
+                });
+            }
+            
+            // Polling every 0.5 seconds
+            setInterval(fetchMessages, 500);
+
+            $('form').on('submit', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function() {
+                        fetchMessages();
+                        $('input[name="message"]').val('');
+                    }
+                });
+            });
+
+            fetchMessages(); // Initial fetch
+        });
+    </script>
+</head>
+<body>
+    <h1>Welcome, <span th:text="${username}">User</span>!</h1>
+    
+    <h2>Message History</h2>
+    <ul id="messages">
+        <li th:each="message : ${messages}" th:text="${message.sender} + ': ' + ${message.message}">Message</li>
+    </ul>
+
+    <h2>Send a Message</h2>
+    <form th:action="@{/message}" method="post">
+        <input type="text" name="message" placeholder="Type your message here">
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>

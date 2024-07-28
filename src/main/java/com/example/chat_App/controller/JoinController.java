@@ -23,7 +23,7 @@ public class JoinController {
 	
 	@GetMapping("/join")
 	public String showJoinPage() {
-		return "join.html";
+		return "join";
 	}
 	
 	@PostMapping("/join")
@@ -33,9 +33,8 @@ public class JoinController {
 		kafkaProducerService.sendMessage("System: " + joinMessage);
 		sessionService.addMessage(new ChatMessage("System", joinMessage));
 		model.addAttribute("username",username);
-		//return "redirect:/chat";
 		System.out.println("Welcome "+username);
-		return "join.html"; //gonna change with chat.html
+		return "redirect:/message"; //gonna change with chat.html
 	}
 	
 	@PostMapping("/leave")
