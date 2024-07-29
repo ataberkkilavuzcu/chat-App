@@ -45,14 +45,6 @@ public class JoinController {
 		return "redirect:/message"; 
 	}
 	
-	@PostMapping("/leave")
-	public String leaveChat() {
-		String username = sessionService.getUsername();
-		if(username != null) {
-			kafkaProducerService.sendMessage("System: "+username+" has left the chat.");
-			sessionService.clearSession();
-		}
-		return username + " has left the chat.";
-	}
+
 	
 }
