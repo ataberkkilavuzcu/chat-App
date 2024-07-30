@@ -17,9 +17,6 @@
                         data.forEach(function(message) {
                             messagesList.append('<li>' + message.sender + ': ' + message.message + '</li>');
                         });
-                    },
-                    error: function(err) {
-                        console.error("Failed to fetch messages", err);
                     }
                 });
             }
@@ -36,19 +33,28 @@
                     success: function() {
                         fetchMessages();
                         $('input[name="message"]').val('');
-                    },
-                    error: function(err) {
-                        console.error("Failed to send message", err);
                     }
                 });
             });
 
             fetchMessages(); // Initial fetch
+
+            $('#signOutButton').on('click', function() {
+                $.ajax({
+                    url: '/leave',
+                    method: 'POST',
+                    success: function() {
+                        window.location.href = '/join';
+                    }
+                });
+            });
         });
     </script>
 </head>
 <body>
     <h1>Welcome, <span th:text="${username}">User</span>!</h1>
+    
+    <button id="signOutButton" style="position: absolute; top: 10px; right: 10px;">Sign Out</button>
     
     <h2>Message History</h2>
     <ul id="messages">

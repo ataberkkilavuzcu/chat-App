@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Join</title>
+    <title>Join Chat</title>
+    <meta charset="UTF-8">
 </head>
 <body>
-	<form action="#" th:action="@{/join}" method="post">
-		<label for="username">Username:</label>
-		<input type="text" id="username" name="username" required>
-		<button type="submit">Join</button>
-	</form>
+    <h1>Join the Chat</h1>
+    <form th:action="@{/join}" method="post">
+        <input type="text" name="username" placeholder="Enter your username">
+        <button type="submit">Join</button>
+    </form>
 </body>
 </html>

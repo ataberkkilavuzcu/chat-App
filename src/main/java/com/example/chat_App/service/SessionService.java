@@ -1,7 +1,7 @@
 package com.example.chat_App.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,13 +16,14 @@ public class SessionService {
     private String username;
     private List<ChatMessage> messages = new ArrayList<>();
 
+    
     @Autowired
     private KafkaConsumerService kafkaConsumerService;
 
     public void createSession(String username) {
         this.username = username;
         this.messages = new ArrayList<>();
-
+        
         // Register as a listener to the KafkaConsumerService
         kafkaConsumerService.addListener(this::addMessage);
     }

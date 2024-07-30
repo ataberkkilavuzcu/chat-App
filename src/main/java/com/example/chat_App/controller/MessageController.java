@@ -58,4 +58,15 @@ public class MessageController {
     public List<ChatMessage> getMessageHistory() {
     	return sessionService.getMessages();
     }
+    
+	@PostMapping("/leave")
+	public String leaveChat() {
+		String username = sessionService.getUsername();
+		if(username != null) {
+			kafkaProducerService.sendMessage("System: "+username+" has left the chat.");
+			sessionService.clearSession();
+		}
+		return "join";
+	}
+   
 }

@@ -33,6 +33,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 	            listener.accept(chatMessage);
 	        }
 			
+			
 			System.out.println("Consumed message: " + message);
 		}
 		
