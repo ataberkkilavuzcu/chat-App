@@ -1,6 +1,7 @@
 package com.example.chat_App.service;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class SessionService {
 
     private String username;
     private List<ChatMessage> messages = new ArrayList<>();
+    private Consumer<ChatMessage> listener;  // Store listener reference
 
     
     @Autowired
@@ -25,7 +27,8 @@ public class SessionService {
         this.messages = new ArrayList<>();
         
         // Register as a listener to the KafkaConsumerService
-        kafkaConsumerService.addListener(this::addMessage);
+        this.listener = this::addMessage;
+        kafkaConsumerService.addListener(this.listener);
     }
 
     public String getUsername() {
@@ -45,10 +48,12 @@ public class SessionService {
     }
 
     public void clearSession() {
+        // Unregister from the KafkaConsumerService using the stored listener reference
+        if (this.listener != null) {
+            kafkaConsumerService.removeListener(this.listener);
+            this.listener = null;  // Clear listener reference after removal
+        }
         this.username = null;
         this.messages.clear();
-
-        // Unregister from the KafkaConsumerService
-        kafkaConsumerService.removeListener(this::addMessage);
     }
 }
