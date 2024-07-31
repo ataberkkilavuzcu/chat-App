@@ -20,9 +20,24 @@
                     }
                 });
             }
+
+            function fetchOnlineUsers() {
+                $.ajax({
+                    url: '/onlineUsers',
+                    method: 'GET',
+                    success: function(data) {
+                        var onlineUsersList = $('#onlineUsers');
+                        onlineUsersList.empty();
+                        data.forEach(function(user) {
+                            onlineUsersList.append('<li><span class="online-dot"></span>' + user + '</li>');
+                        });
+                    }
+                });
+            }
             
             // Polling every 0.5 seconds
             setInterval(fetchMessages, 500);
+            setInterval(fetchOnlineUsers, 500);
 
             $('form').on('submit', function(event) {
                 event.preventDefault();
@@ -38,6 +53,7 @@
             });
 
             fetchMessages(); // Initial fetch
+            fetchOnlineUsers(); // Initial fetch
 
             $('#signOutButton').on('click', function() {
                 $.ajax({
@@ -56,10 +72,18 @@
     
     <button id="signOutButton" style="position: absolute; top: 10px; right: 10px;">Sign Out</button>
     
-    <h2>Message History</h2>
-    <ul id="messages">
-        <li th:each="message : ${messages}" th:text="${message.sender} + ': ' + ${message.message}">Message</li>
-    </ul>
+    <div id="chatContainer">
+        <div id="messageContainer">
+            <h2>Message History</h2>
+            <ul id="messages">
+                <li th:each="message : ${messages}" th:text="${message.sender} + ': ' + ${message.message}">Message</li>
+            </ul>
+        </div>
+        <div id="onlineUsersContainer">
+            <h2>Online Users</h2>
+            <ul id="onlineUsers"></ul>
+        </div>
+    </div>
 
     <h2>Send a Message</h2>
     <form th:action="@{/message}" method="post">

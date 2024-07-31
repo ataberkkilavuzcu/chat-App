@@ -56,7 +56,7 @@ public class MessageController {
     @GetMapping("/history")
     @ResponseBody
     public List<ChatMessage> getMessageHistory() {
-    	return sessionService.getMessages();
+       	return sessionService.getMessages();
     }
     
 	@PostMapping("/leave")
@@ -64,6 +64,7 @@ public class MessageController {
 		String username = sessionService.getUsername();
 		if(username != null) {
 			kafkaProducerService.sendMessage("System: "+username+" has left the chat.");
+			kafkaConsumerService.removeonlineUser(username);
 			sessionService.clearSession();
 		}
 		return "join";
