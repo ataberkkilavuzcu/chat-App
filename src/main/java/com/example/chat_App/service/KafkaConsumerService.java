@@ -14,7 +14,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 	public class KafkaConsumerService {
 		
 		private final List<ChatMessage> messageHistory = new ArrayList<>();
-	    private final List<Consumer<ChatMessage>> listeners = new ArrayList<>();
+	    private final List<Consumer<ChatMessage>> listeners = new CopyOnWriteArrayList<>();
+
 		
 		@KafkaListener(topics = "chat-app", groupId = "group_id")
 		public void consume(String message) {
@@ -39,11 +40,19 @@ import org.springframework.kafka.annotation.KafkaListener;
 		
 		public void addListener(Consumer<ChatMessage> listener) {
 			listeners.add(listener);
+		    System.out.println("Listener added: " + listener);
+
 		}
 		
 		public void removeListener(Consumer<ChatMessage> listener) {
-			listeners.remove(listener);
+		    boolean removed = listeners.remove(listener);
+		    if (removed) {
+		        System.out.println("Listener removed successfully.");
+		    } else {
+		        System.out.println("Listener not found.");
+		    }
 		}
+
 		
 		public List<ChatMessage> getMessageHistory(){
 			return messageHistory;
