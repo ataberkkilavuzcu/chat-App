@@ -15,6 +15,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 		
 		private final List<ChatMessage> messageHistory = new ArrayList<>();
 	    private final List<Consumer<ChatMessage>> listeners = new CopyOnWriteArrayList<>();
+	    
+	    private final List<String> onlineUsers = new ArrayList<>();//
 
 		
 		@KafkaListener(topics = "chat-app", groupId = "group_id")
@@ -28,6 +30,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 			
 			ChatMessage chatMessage = new ChatMessage(sender, content);
 			messageHistory.add(chatMessage);
+			
 			
 			// Notify all subscribed sessions of the new message
 			for (Consumer<ChatMessage> listener : listeners) {
@@ -56,6 +59,26 @@ import org.springframework.kafka.annotation.KafkaListener;
 		
 		public List<ChatMessage> getMessageHistory(){
 			return messageHistory;
+		}
+		
+		public void addonlineUser(String username) {
+			if(!onlineUsers.contains(username)) {////
+				onlineUsers.add(username);
+			}
+			
+		}
+		
+		public void removeonlineUser(String username) {
+			if(onlineUsers.contains(username)) {
+				onlineUsers.remove(username);
+			}
+		}
+		
+		public List<String> getonlineUsers(){
+			for (String string : onlineUsers) {
+				System.out.println("online user: "+ string);
+			}
+			return onlineUsers;
 		}
 		
 	}

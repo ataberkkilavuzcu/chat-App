@@ -42,6 +42,8 @@ public class JoinController {
 		model.addAttribute("messages", sessionService.getMessages());
 		
 		System.out.println("Welcome "+username);
+		kafkaConsumerService.addonlineUser(username);
+		
 		return "redirect:/message"; 
 	}
 	
