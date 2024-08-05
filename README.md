@@ -49,7 +49,7 @@ Welcome to the chat-App! This project demonstrates a simple chat application bui
     
 3. **Import This Project To An IDE**:
    
-4. ""Configure application.properties File With Correct Kafka Server IP""
+4. **Configure application.properties File With Correct Kafka Configurations**
 
 5. **Access the Application**:
     Open your browser and go to `http://localhost:8080`.
