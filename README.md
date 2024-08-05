@@ -69,3 +69,7 @@ Welcome to the chat-App! This project demonstrates a simple chat application bui
     - Click the "Sign Out" button to leave the chat.
 
 
+## License
+
+This project is licensed under the MIT License.
+
