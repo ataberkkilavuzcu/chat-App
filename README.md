@@ -25,7 +25,7 @@ Welcome to the chat-App! This project demonstrates a simple chat application bui
 - **Spring Boot**: Backend framework for Java.
 - **Kafka**: Distributed messaging system.
 - **Thymeleaf**: Template engine for rendering dynamic web pages.
-- **Java**: Programming language.
+- **Java**: 
 - **Docker**: Containerization platform.
 - **Postman**: API testing tool.
 - **Virtual Machine (Ubuntu)**: Development environment.
